@@ -1,4 +1,3 @@
-import io
 
 class DataBase:
     def __init__(self):

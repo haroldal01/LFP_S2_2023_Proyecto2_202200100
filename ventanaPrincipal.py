@@ -1,11 +1,11 @@
 import tkinter as tk
 from tkinter import *
-from tkinter import filedialog
-from tkinter.filedialog import askopenfilename, asksaveasfilename
+
+from tkinter.filedialog import askopenfilename
 from tkinter import scrolledtext
 from analizador import *
-from printer import *
 from pparser import Parser
+import webbrowser
 
 
 
@@ -30,8 +30,6 @@ def abrir_archivo():
         cuadro_texto.delete(1.0, tk.END)
         cuadro_texto.insert(tk.END, contenido)
         
-
-        actualizar_texto()  # Actualiza el cuadro de texto de la derecha
     except FileNotFoundError:
         cuadro_texto.delete(1.0, tk.END)  # Borra el contenido actual del cuadro de texto
         cuadro_texto.insert(tk.END, "Archivo no encontrado")
@@ -49,12 +47,57 @@ def analizar_texto():
     parser = Parser(tokens)
     parser.parse()
 
-    #texto_a_imprimir = Printer()
-
-    texto_a_la_derecha.delete("1.0", tk.END)
-    #texto_a_la_derecha.insert(tk.END,texto_a_imprimir)
-
+  
+    texto_a_mostrar = str(parser.devolver_text())
+    texto_a_la_derecha.configure(state='normal')
    
+    texto_a_la_derecha.insert(tk.END,texto_a_mostrar)
+    
+
+def generar_reporte_errores():
+    if not errores:
+        return
+    nombrearchivo = "reporte_errores.html" 
+    
+    with open(nombrearchivo, "w") as archivo_html:
+        archivo_html.write("<html>")
+        archivo_html.write("<head><title>Reporte de Errores</title></head>")
+        archivo_html.write("<body>")
+        archivo_html.write("<h1>Reporte de Errores</h1>")
+        archivo_html.write("<table border='1'>")
+        archivo_html.write("<tr><th>Caracter</th><th>Línea</th><th>Columna</th></tr>")
+
+        # Generar filas de la tabla con datos de errores
+        for error in errores:
+            archivo_html.write(f"<tr><td>{error.character}</td><td>{error.line}</td><td>{error.column}</td></tr>")
+
+        archivo_html.write("</table>")
+        archivo_html.write("</body>")
+        archivo_html.write("</html>")
+        webbrowser.open(nombrearchivo)
+
+def generar_reporte_tokens():
+    if not tokens_resultantes:
+        return
+
+    nombre_archivo = "reporte_tokens.html"
+
+    with open(nombre_archivo, "w") as archivo_html:
+        archivo_html.write("<html>")
+        archivo_html.write("<head><title>Reporte de Tokens</title></head>")
+        archivo_html.write("<body>")
+        archivo_html.write("<h1>Reporte de Tokens</h1>")
+        archivo_html.write("<table border='1'>")
+        archivo_html.write("<tr><th>Nombre</th><th>Valor</th><th>Fila</th><th>Columna</th></tr>")
+
+        for token in tokens_resultantes:
+            archivo_html.write(f"<tr><td>{token.nombre}</td><td>{token.valor}</td><td>{token.fila}</td><td>{token.columna}</td></tr>")
+
+        archivo_html.write("</table>")
+        archivo_html.write("</body>")
+        archivo_html.write("</html>")
+
+        webbrowser.open(nombre_archivo)
 
 ventana = tk.Tk()
 ventana.title("Proyecto 2 - 202200100")
@@ -69,15 +112,16 @@ cuadro_texto = tk.Text(ventana, bg="#f8f9fa", foreground="#343a40",
             width=50, height=30, font=("Courier New", 13))
 cuadro_texto.pack(fill=tk.BOTH, expand=False)
 
-texto_a_la_derecha = scrolledtext.ScrolledText(frame_derecha, wrap=tk.WORD, width=50, height=30, font=("Courier New", 13), bg="black", fg="white")
+texto_a_la_derecha = scrolledtext.ScrolledText(frame_derecha, wrap=tk.WORD, width=50, height=30, font=("Courier New", 13), bg="white", fg="black")
 
 texto_a_la_derecha.pack(fill=tk.BOTH, expand=True)
 
 # Crear un menú desplegable "Archivo"
 barra_menu = tk.Menu(ventana)
 opmenu = tk.Menu(barra_menu, tearoff=0)
-opmenu.add_command(label="Nuevo")
-opmenu.add_command(label="Abrir", command=abrir_archivo)
+opmenu.add_command(label="Reporte de Tokens",command=generar_reporte_tokens)
+opmenu.add_command(label="Reporte de Errores", command=generar_reporte_errores)
+opmenu.add_command(label="Ärbol de derivación")
 opmenu.add_separator()
 opmenu.add_command(label="Salir", command=ventana.quit)
 barra_menu.add_cascade(label="Reportes", menu=opmenu)

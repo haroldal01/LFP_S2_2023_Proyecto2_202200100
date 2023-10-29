@@ -8,5 +8,5 @@ class Printer:
     def add_line(self,text):
         self.text += text + "\n"
 
-    def print(self):
+    def get_text(self):
         return self.text

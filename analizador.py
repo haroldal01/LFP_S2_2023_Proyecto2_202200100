@@ -6,7 +6,7 @@ fila = 1
 columna = 1 
 tokens = []
 errores = []
-
+tokens_resultantes = []
 
 
 palabras_reservadas = {
@@ -75,7 +75,7 @@ def numerot(entrada,i):
 
 def tokenizar_entrada(entrada):
     global fila, columna
-    tokens_resultantes = []
+    #tokens_resultantes = []
     i = 0
     while i < len(entrada):
         char = entrada[i]

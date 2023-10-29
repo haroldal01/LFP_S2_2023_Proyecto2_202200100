@@ -47,13 +47,19 @@ class Parser:
             
 
 
-        texto = self.printer.print()
+        texto = self.printer.get_text()
         for linea in texto.split("\n"):
             print("\033[32m" + "" + linea + "\033[0m")
+
+    def devolver_text(self):
+        texto_devuelto = self.printer.get_text()
+        return texto_devuelto 
 
     def imprimir(self):
         self.consume()
         if self.consume().nombre != "PARENTESISIZQ":
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             print("se esperaba que abriera un parentesis")
             return
         
@@ -313,26 +319,6 @@ class Parser:
         
         self.printer.add_line(str(self.db.sumar(clave)))
 
-    def exportarReporte(self):
-        self.consume()
-        if self.consume().nombre != "PARENTESISIZQ":
-            print("se esperaba un parentesis izq")
-            return
-        
-        if self.peek().nombre != "STRING":
-            print("se esperaba un string")
-            return 
-        titulo = self.consume().valor
-        
-        if self.consume().nombre != "PARENTESISDER":
-            print("se esperaba un parentesis derecho")
-            return
-        
-        if self.consume().nombre != "PUNTOYCOMA":
-            print("SE ESPERABA UN PUNTO Y COMA")
-            return
-        
-        self.printer.add_line(self.db.exportarReporte(titulo))
 
 
 

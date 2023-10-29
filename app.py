@@ -1,6 +1,6 @@
-from analizador import tokenizar_entrada
+from analizador import *
 from pparser import Parser
-from printer import Printer
+from printer import *
 
 
 
@@ -16,4 +16,7 @@ print("="*50)
 parser = Parser(tokens)
 parser.parse()
 
-
+print("_______________________________________")
+printer = Printer()
+print(printer.get_text())
+print("_______________________________________")
