@@ -71,7 +71,7 @@ class DataBase:
             for lista in valores:
                 texto += f"{lista[i]} "
             texto += "\n"
-        
+        return texto
     
         
 

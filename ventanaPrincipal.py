@@ -14,7 +14,7 @@ def actualizar_texto():
     texto = cuadro_texto.get("1.0", "end-1c")
     texto_a_la_derecha.configure(state='normal')  # Habilita la edición del cuadro de texto de la derecha
     texto_a_la_derecha.delete("1.0", tk.END)  # Borra el contenido actual del cuadro de texto de la derecha
-    texto_a_la_derecha.insert(tk.END, texto)
+    texto_a_la_derecha.insert(tk.END, "")
     texto_a_la_derecha.configure(state='disabled')
 
 # Función para abrir un archivo
