@@ -1,6 +1,7 @@
 from printer import Printer
 from database import DataBase
 from analizador import *
+from diagrama import *
 
 class Parser:
     def __init__(self,tokens):
@@ -8,6 +9,7 @@ class Parser:
         self.indice = 0
         self.printer = Printer()
         self.db = DataBase()
+        self.ultimaInstruccion = None
 
     def consume(self):
         token = self.tokens[self.indice]
@@ -18,6 +20,10 @@ class Parser:
         return self.tokens[self.indice] 
     
     def parse(self):
+        raiz = diagrama.agregarnodo("INICIO")
+        self.ultimaInstruccion = raiz
+
+
         while self.indice < len(self.tokens):
             if self.peek().nombre == "IMPRIMIR":
                 self.imprimir()
@@ -43,9 +49,15 @@ class Parser:
                 self.exportarReporte()
             elif self.peek().nombre == "PROMEDIO":
                 self.promedio()
-
+            else:
+                print("se esperaba una instrucción")
+                return
             
-
+            print(self.ultimaInstruccion)
+            if self.indice <len(self.tokens):
+                self.ultimaInstruccion = diagrama.agregarnodo("LISTA_INSTRUCCIONES")
+                diagrama.agregarArista(raiz,self.ultimaInstruccion)
+                raiz = self.ultimaInstruccion
 
         texto = self.printer.get_text()
         for linea in texto.split("\n"):
@@ -62,7 +74,7 @@ class Parser:
             errores.append(error)
             print("se esperaba que abriera un parentesis")
             return
-        
+    
         token = self.consume()
         if token.nombre != "STRING":
             print("se esperaba una cadena de texto")
@@ -76,7 +88,15 @@ class Parser:
             print("se esperaba un punto y coma")
             return
         
-        #print(token.valor)
+        raiz = diagrama.agregarnodo("INSTRUCCION")
+        instruccion = diagrama.agregarnodo("INS_IMPRIMIR")
+        diagrama.agregarArista(raiz,instruccion)
+        diagrama.agregarArista(instruccion,diagrama.agregarnodo("imprimir"))
+        diagrama.agregarArista(instruccion,diagrama.agregarnodo("PARENTESISIZQ"))
+        diagrama.agregarArista(instruccion,diagrama.agregarnodo(token.valor))
+        diagrama.agregarArista(instruccion,diagrama.agregarnodo("PARENTESISDER"))
+        diagrama.agregarArista(instruccion,diagrama.agregarnodo("PUNTOYCOMA"))
+        diagrama.agregarArista(self.ultimaInstruccion,raiz)
         self.printer.add(token.valor)
 
 
@@ -320,8 +340,26 @@ class Parser:
         self.printer.add_line(str(self.db.sumar(clave)))
 
 
-
-
+    def exportarReporte(self):
+        self.consume()
+        if self.consume().nombre != "PARENTESISIZQ":
+            print("se esperaba un parentesis izq")
+            return
+        
+        if self.peek().nombre != "STRING":
+            print("se esperaba un string")
+            return 
+        titulo = self.consume().valor
+        
+        if self.consume().nombre != "PARENTESISDER":
+            print("se esperaba un parentesis derecho")
+            return
+        
+        if self.consume().nombre != "PUNTOYCOMA":
+            print("SE ESPERABA UN PUNTO Y COMA")
+            return
+        
+        self.printer.add_line(str(self.db.exportarReporte(titulo)))
 
 
 

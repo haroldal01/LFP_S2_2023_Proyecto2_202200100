@@ -73,5 +73,34 @@ class DataBase:
             texto += "\n"
         return texto
     
+    def exportarReporte(self,titulo):
+        claves = list(self.claves.keys())
+        valores = list(self.claves.values())
+
+        nombre_archivo = "reporteHTML.html"
+        with open(nombre_archivo, "w") as archivo_html:
+            archivo_html.write("<html>")
+            archivo_html.write("<head><title>{}</title></head>".format(titulo))
+            archivo_html.write("<body>")
+            archivo_html.write("<h1>{}</h1>".format(titulo))
+            archivo_html.write("<table border='1'>")
+
+            # Encabezados de la tabla
+            archivo_html.write("<tr>")
+            for clave in claves:
+                archivo_html.write("<th>{}</th>".format(clave))
+            archivo_html.write("</tr>")
+
+            # Datos de la tabla
+            for i in range(len(valores[0])):
+                archivo_html.write("<tr>")
+                for lista in valores:
+                    archivo_html.write("<td>{}</td>".format(lista[i]))
+                archivo_html.write("</tr>")
+
+            archivo_html.write("</table>")
+            archivo_html.write("</body>")
+            archivo_html.write("</html>")
+    
         
 
