@@ -51,6 +51,9 @@ class Parser:
                 self.promedio()
             else:
                 print("se esperaba una instrucción")
+                error = Error(self.consume(),self.indice,self.indice)
+                errores.append(error)
+
                 return
             
             print(self.ultimaInstruccion)
@@ -78,14 +81,20 @@ class Parser:
         token = self.consume()
         if token.nombre != "STRING":
             print("se esperaba una cadena de texto")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
 
         if self.consume().nombre != "PARENTESISDER":
             print("se esperaba un cierre de parentesis")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         if self.consume().nombre != "PUNTOYCOMA":
             print("se esperaba un punto y coma")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         raiz = diagrama.agregarnodo("INSTRUCCION")
@@ -103,19 +112,27 @@ class Parser:
         self.consume()
         if self.consume().nombre != "PARENTESISIZQ":
             print("se esperaba que abriera un parentesis")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         token = self.consume()
         if token.nombre != "STRING":
             print("se esperaba una cadena de texto")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
 
         if self.consume().nombre != "PARENTESISDER":
             print("se esperaba un cierre de parentesis")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         if self.consume().nombre != "PUNTOYCOMA":
             print("se esperaba un punto y coma")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         self.printer.add_line(token.valor)
@@ -125,14 +142,20 @@ class Parser:
         self.consume()
         if self.consume().nombre != "IGUAL":
             print("se esperaba un igual")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
 
         if self.consume().nombre != "CORCHETEIZQ":
             print("se esperaba un corchete de cierre")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         if self.peek().nombre != "STRING":
             print("se esperaba un valor de clave")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         valor = self.consume().valor 
@@ -142,12 +165,16 @@ class Parser:
             self.consume()
             if self.peek().nombre != "STRING":
                 print("se esperaba un valor de clave")
+                error = Error(self.consume(),self.indice,self.indice)
+                errores.append(error)
                 return
             valor = self.consume().valor
             self.db.agg_clave(valor)
 
         if self.consume().nombre != "CORCHETEDER":
             print("se esperaba un corchete de cierre")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
 
@@ -155,10 +182,14 @@ class Parser:
         self.consume()
         if self.consume().nombre != "IGUAL":
             print("se esperaba un igual")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         if self.consume().nombre != "CORCHETEIZQ":
             print("se esperaba un corchete izquierdo")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         while self.peek().nombre == "LLAVEIZQ":
@@ -167,6 +198,8 @@ class Parser:
 
             if self.peek().nombre != "STRING" and self.peek().nombre != "NUMERO":
                 print("se esperaba un valor de clave")
+                error = Error(self.consume(),self.indice,self.indice)
+                errores.append(error)
                 return
 
             valor = self.consume().valor 
@@ -177,6 +210,8 @@ class Parser:
                 self.consume()
                 if self.peek().nombre != "STRING" and self.peek().nombre != "NUMERO":
                     print("se esperaba un valor de clave2")
+                    error = Error(self.consume(),self.indice,self.indice)
+                    errores.append(error)
                     return
                 valor = self.consume().valor 
                 self.db.agg_valor(contador,valor)
@@ -184,6 +219,8 @@ class Parser:
 
             if self.peek().nombre != "LLAVEDER":
                 print("se esperaba una llave derecha")
+                error = Error(self.consume(),self.indice,self.indice)
+                errores.append(error)
                 return
             self.consume()
         self.consume()
@@ -194,14 +231,20 @@ class Parser:
         self.consume()
         if self.consume().nombre != "PARENTESISIZQ":
             print("se esperaba un parentesis izquierdo")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         if self.consume().nombre != "PARENTESISDER":
             print("se esperaba un parentesis derecho")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         if self.consume().nombre != "PUNTOYCOMA":
             print("se esperaba un punto y coma")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         self.printer.add_line(str(self.db.conteo()))
 
@@ -210,27 +253,39 @@ class Parser:
         self.consume()
         if self.consume().nombre != "PARENTESISIZQ":
             print("se esperaba un paren izq")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         if self.peek().nombre != "STRING":
             print("se esperaba un string")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return 
         clave = self.consume().valor
         if self.consume().nombre != "COMA":
             print("se esperaba una coma")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         if self.peek().nombre != "STRING" and self.peek().nombre != "NUMERO":
             print("se esperaba un valor de clave")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         valor = self.consume().valor 
         
         if self.consume().nombre != "PARENTESISDER":
             print("se esperaba un parentesis derecho")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         if self.consume().nombre != "PUNTOYCOMA":
             print("SE ESPERABA UN PUNTO Y COMA")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         self.printer.add_line(str(self.db.contarsi(clave,valor)))
@@ -239,19 +294,27 @@ class Parser:
         self.consume()
         if self.consume().nombre != "PARENTESISIZQ":
             print("se esperaba un parentesis izq")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         if self.peek().nombre != "STRING":
             print("se esperaba un string")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return 
         clave = self.consume().valor
         
         if self.consume().nombre != "PARENTESISDER":
             print("se esperaba un parentesis derecho")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         if self.consume().nombre != "PUNTOYCOMA":
             print("SE ESPERABA UN PUNTO Y COMA")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         self.printer.add_line(str(self.db.max(clave)))
@@ -261,19 +324,27 @@ class Parser:
         self.consume()
         if self.consume().nombre != "PARENTESISIZQ":
             print("se esperaba un parentesis izq")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         if self.peek().nombre != "STRING":
             print("se esperaba un string")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return 
         clave = self.consume().valor
         
         if self.consume().nombre != "PARENTESISDER":
             print("se esperaba un parentesis derecho")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         if self.consume().nombre != "PUNTOYCOMA":
             print("SE ESPERABA UN PUNTO Y COMA")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         self.printer.add_line(str(self.db.min(clave)))
@@ -282,19 +353,27 @@ class Parser:
         self.consume()
         if self.consume().nombre != "PARENTESISIZQ":
             print("se esperaba un parentesis izq")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         if self.peek().nombre != "STRING":
             print("se esperaba un string")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return 
         clave = self.consume().valor
         
         if self.consume().nombre != "PARENTESISDER":
             print("se esperaba un parentesis derecho")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         if self.consume().nombre != "PUNTOYCOMA":
             print("SE ESPERABA UN PUNTO Y COMA")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         self.printer.add_line(str(self.db.promedio(clave)))
@@ -304,14 +383,20 @@ class Parser:
         self.consume()
         if self.consume().nombre != "PARENTESISIZQ":
             print("se esperaba un parentesis izq")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         if self.consume().nombre != "PARENTESISDER":
             print("se esperaba un parentesis derecho")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         if self.consume().nombre != "PUNTOYCOMA":
             print("se esperaba un punto y coma")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         self.printer.add_line(str(self.db.datos()))
 
@@ -321,6 +406,8 @@ class Parser:
         self.consume()
         if self.consume().nombre != "PARENTESISIZQ":
             print("se esperaba un parentesis izq")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         if self.peek().nombre != "STRING":
@@ -330,10 +417,14 @@ class Parser:
         
         if self.consume().nombre != "PARENTESISDER":
             print("se esperaba un parentesis derecho")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         if self.consume().nombre != "PUNTOYCOMA":
             print("SE ESPERABA UN PUNTO Y COMA")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         self.printer.add_line(str(self.db.sumar(clave)))
@@ -343,19 +434,27 @@ class Parser:
         self.consume()
         if self.consume().nombre != "PARENTESISIZQ":
             print("se esperaba un parentesis izq")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         if self.peek().nombre != "STRING":
             print("se esperaba un string")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return 
         titulo = self.consume().valor
         
         if self.consume().nombre != "PARENTESISDER":
             print("se esperaba un parentesis derecho")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         if self.consume().nombre != "PUNTOYCOMA":
             print("SE ESPERABA UN PUNTO Y COMA")
+            error = Error(self.consume(),self.indice,self.indice)
+            errores.append(error)
             return
         
         self.printer.add_line(str(self.db.exportarReporte(titulo)))

@@ -21,7 +21,7 @@ palabras_reservadas = {
     "sumar":"SUMAR",
     "max":"MAX",
     "min":"MIN",
-    "expotarReporte":"EXPORTARREPORTE",
+    "exportarReporte":"EXPORTARREPORTE",
     "(":"PARENTESISIZQ",
     ")":"PARENTESISDER",
     "[":"CORCHETEIZQ",
