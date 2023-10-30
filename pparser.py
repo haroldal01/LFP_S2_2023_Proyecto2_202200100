@@ -1,7 +1,7 @@
 from printer import Printer
 from database import DataBase
 from analizador import *
-from diagrama import *
+from diagrama import diagrama
 
 class Parser:
     def __init__(self,tokens):
@@ -89,9 +89,8 @@ class Parser:
             return
         
         raiz = diagrama.agregarnodo("INSTRUCCION")
-        instruccion = diagrama.agregarnodo("INS_IMPRIMIR")
+        instruccion = diagrama.agregarnodo("IMPRIMIR")
         diagrama.agregarArista(raiz,instruccion)
-        diagrama.agregarArista(instruccion,diagrama.agregarnodo("imprimir"))
         diagrama.agregarArista(instruccion,diagrama.agregarnodo("PARENTESISIZQ"))
         diagrama.agregarArista(instruccion,diagrama.agregarnodo(token.valor))
         diagrama.agregarArista(instruccion,diagrama.agregarnodo("PARENTESISDER"))

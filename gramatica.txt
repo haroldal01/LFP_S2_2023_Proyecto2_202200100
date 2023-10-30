@@ -1,9 +1,9 @@
 INICIO -> LISTA_INSTRUCCIONES
         | EPSILON 
 
-LISTA_INSTRUCCIONES -> INSTRUCCION LISTA_INSTRUCCIONES2
+LISTA_INSTRUCCIONES -> INSTRUCCION LISTA_INSTRUCCIONES
 
-LISTA_INSTRUCCIONES2 -> INSTRUCCION LISTA_INSTRUCCIONES2
+LISTA_INSTRUCCIONES -> INSTRUCCION LISTA_INSTRUCCIONES
 					 | Epsilon
 
 
@@ -23,3 +23,44 @@ INSTRUCCION -> INS_CLAVES
 INS_CLAVES -> claves igual corchetea LISTA_CLAVES corchetec
 
 LISTA_CLAVES -> cadena LISTA_CLAVES
+
+LISTA_CLAVES -> coma  LISTA_CLAVES
+                | Epsilon 
+
+INS_REGISTROS -> registros igual corchetea LISTA_REGISTROS corchetec
+
+LISTA_REGISTROS -> REGISTRO LISTA_REGISTROS
+
+LISTA_REGISTROS -> REGISTRO LISTA_REGISTROS
+				| Epsilon 
+
+REGISTRO -> llavea LISTA_VAL_REG llavec
+
+LISTA_VAL_REG -> VAL_REG LISTA_VAL_REG
+
+LISTA_VAL_REG -> coma VAL_REG LISTA_VAL_REG
+				| Epsilon 
+
+VAL_REG -> cadena
+		| entero
+		| decimal
+
+INS_IMPRIMIR -> imprimir parena cadena parenc puntoycoma
+
+INS_IMPRIMIRLN -> imprimirln parena cadena parenc puntoycoma
+
+INS_CONTEO -> conteo parena parenc puntoycoma
+
+INS_PROMEDIO -> promedio parena cadena parenc puntoycoma
+
+INS_CONTARSI -> contarsi parena cadena coma entero parenc puntoycoma
+
+INS_DATOS -> datos parena parenc puntoycoma
+
+INS_SUMAR -> sumar parena cadena parenc puntoycoma
+
+INS_MAX -> max parena cadena parenc puntoycoma
+
+INS_MIN -> min parena cadena parenc puntoycoma
+
+INS_EXPORTARREPORTE-> exportarReporte parena cadena parenc puntoycoma
