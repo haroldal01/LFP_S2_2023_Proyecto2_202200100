@@ -1,4 +1,4 @@
-
+import webbrowser
 class DataBase:
     def __init__(self):
         self.claves = {}
@@ -101,6 +101,7 @@ class DataBase:
             archivo_html.write("</table>")
             archivo_html.write("</body>")
             archivo_html.write("</html>")
+            webbrowser.open(nombre_archivo)
     
         
 

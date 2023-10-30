@@ -127,13 +127,15 @@ def tokenizar_entrada(entrada):
             i += 1 
         
         elif char == "'":
-            o = 1   #o es el contador de las ', aquí cuenta una porque es la inicial,o tiene que ser menor a 4 y mayor a 0
-            while  o < 4 and entrada[i]== "'":
-                o += 1 
+            i += 3  # Saltar las tres comillas iniciales
+            while i < len(entrada) and entrada[i:i + 3] != "'''":
+                if entrada[i] == "\n":
+                    fila += 1
+                    columna = 1
                 i += 1
+            if i < len(entrada):
+                i += 3  # Saltar las tres comillas finales
 
-            if o == 3:
-                print("se encontraron comillas triples")
 
 
         else:
